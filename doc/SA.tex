@@ -17,10 +17,99 @@ Este entrenamiento se realiza utilizando la librería \textit{sklearn} de \texti
 En caso de recibir como parámetro \textit{dataset == all} se utilizan los archivos que contienen todas las categorías mezcladas. A continuación, se comparan los resultados obtenidos.
 
 \subsubsection{Comparación}
-Como se indica en las instrucciones de la tarea, se evalúan las cuatro métricas más comunes para medir el desempeño cada uno de los modelos. El resultado de cada métrica se almacena en un DataFrame.
+Como se indica en las instrucciones de la tarea, se evalúan las cuatro métricas más comunes para medir el desempeño cada uno de los modelos. El resultado de cada métrica se almacena en un DataFrame mostrado a continuación (\textit{véase tabla} \ref{tag:SAresults}). Allí se muestra para cada entrenamiento el \textit{dataset} que se utilizó, el clasificador seleccionado, el modelo escogido y el valor resultante de todas las métricas aplicadas.
 
-\input{results/df}
+\input{results/SA-df.txt}
+
+Lo anterior muestra claramente que el desempeño en general de todos los modelos es muy similar. No hay un modelo que sobresalga en todas las métricas. A continuación, se muestran promedios de los resultados agrupando para cada parámetro.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.45]{results/classifier_comparison.png}
+    \caption{Comparación de clasificadores}
+    \label{fig:classifier_comparisson}
+\end{figure}
+
+En la figura \ref{fig:classifier_comparisson} se puede ver el promedio de desempeño de cada uno de los clasificadores probados para cumplir con la tarea de análisis de sentimientos. Se hace evidente que el resultado del árbol de decisión y Naive Bayes son ligeramente inferiores a los demás, con un desempeño promedio de 0.65 y 0.72 respectivamente entre las métricas evaluadas. Esto es ligeramente mejor que adivinar, pues la probabilidad esperada de adivinar correctamente la clase es de 0.50.\\
+
+En contraste los otros dos clasificadores (RF y LR) tienen un desempeño similar, resaltando que el mejor \textit{recall} corresponde a \textit{Random Forest} pero el mejor \textit{precision} corresponde a regresión logística. No obstante, dado que el \textit{recall} de LR es más alto, podría decirse que es el clasificador que mejor clasifica este dataset. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.45]{results/datasets_comparison.png}
+    \caption{Comparación de datasets}
+    \label{fig:dataset_comparisson}
+\end{figure}
+
+En cuanto a la comparación de datasets (\textit{véase figura \ref{fig:dataset_comparisson}}) los resultados son relativamente similares. En donde hay muy buen \textit{recall} un \textit{precision} bajo compensa. Podría decirse que los datasets de libros y películas son un poco más difíciles de de clasificar, mientas que electrónicos, cocina y todos juntos son un poco más fáciles. Se resalta la poca variación en las métricas resultantes de los clasificadores con todos los dataset juntos al igual que en el de electrónicos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.45]{results/model_comparison.png}
+    \caption{Comparación de modelos}
+    \label{fig:model_comparisson}
+\end{figure}
+
+Ahora bien, los modelos de \textit{Bag of Words} booleano y no booleano tienen resultados casi que idénticos. Adicionalmente, la construcción de uno o el otro no tiene mayor diferencia ni en tiempo ni en capacidad computacional requerida. 
 
 \subsection{\textit{Decision tree and random forests}}
-\subsubsection{\textit{Decision tree}}
-\subsubsection{\textit{Random forest}}
+
+A continuación, se realiza un investigación detallada en los modelos de clasificación de árbol de decisión y \textit{Random forest}. Para ello se responden las siguientes preguntas:
+\begin{itemize}
+    \item \textbf{¿Qué es un árbol de decisión y cómo funciona?}\\
+    
+    Los árboles de decisión corresponden a un método supervisado de clasificación y/o regresión de \textit{Machine Learning}. Usualmente, un árbol está constituido por nodos, ramas y hojas. En los nodos se evalúa el valor de cierto atributo o característica. Las ramas conectan nodos con otros nodos y con hojas. Las hojas son nodos terminales que predicen la clase o la distribución.\\
+    Hay dos tipos de árboles de decisión: árboles de clasificación y árboles de regresión. Los primeros involucran datos discretos mientras que los segundos trabajan con datos continuos \cite{Sklearn-DT}. \\
+    El funcionamiento se basa en iniciar con un nodo terminal que es en donde se sabrá la clase a la que pertenece la observación. Luego se selecciona un atributo de la observación y se analizan los posibles valores que puede tomar y la incidencia de dicho atributo en la clase seleccionada. Este proceso se sigue recursivamente hasta llegar un criterio de parada. En cada uno de los nodos se selecciona la mejor división según un determinado criterio, los cuales se muestran a continuación:
+    \begin{equation}
+        gini(v) = 1-\sum_{y \in L} p(y|v)^2
+    \end{equation}
+    \begin{equation}
+        entropy(v) = -\sum_{y \in L} p(y|v) \cdot log(p(p|v))
+    \end{equation}
+    Para determinar qué tan bien se comporta una condición se compara el grado de impureza del nodo padre con el grado de impureza de los nodos hijos. Entre mayor sea la diferencia mejor resultaría dividir bajo esa condición.  
+    
+    \item \textbf{¿Cuál algoritmo se utiliza para construir un árbol de decisión?}\\
+    
+    A continuación se mencionan los principales algoritmos de entrenamiento de árboles de decisión. La información se obtiene de \cite{Sklearn-DT}.
+    \begin{itemize}
+        \item \textit{Iterative Dichotomiser 3:} El algoritmo crea un árbol con múltiples caminos evaluando para cada nodo cuál es la característica categórica que ofrece la mayor ganancia de información (information gain) para las etiquetas de clase. El árbol crece hacia abajo hasta alcanzar su tamaño máximo y se aplica una etapa de \textit{pruning} o poda. 
+        \item \textit{C4.5:} Es el sucesor del algoritmo previamente descrito. Retira la condición de que las características deben ser categóricas definiendo dinámicamente atributos discretos que permiten partir el atributo continuo en diferentes sets de intervalos.
+        \item \textit{C5.0:} Es una versión mejorada de C4.5 que utiliza menos memoria y crea sets de decisión más pequeños siendo más acertado. Está liberado bajo licencia de propiedad.
+        \item \textbf{\textbf{CART:}} Es similar a C4.5 pero soporta objetivos numéricos (regresión). Construye árboles binarios usando la característica que más ganancia de información ofrezca en cada nodo. Es el utilizado por \textit{scikit-learn}.
+    \end{itemize}
+    \item \textbf{¿Un árbol de decisión es un modelo generativo o discriminativo?}\\
+    
+    La diferencia fundamental entre un modelo discriminativo y uno generativo radica en que el modelo discriminativo se aprende las diferencias entre clases mientras que el generativo modela la distribución de las clases individuales. Por esto mismo los árboles de decisión son modelos discriminativos. A través de condicionales y reglas de decisión el árbol va decidiendo si una observación específica se encuentra dentro de una clase o de la otra. \cite{DvsG}.
+    
+    \item \textbf{¿Qué es un método agrupado en \textit{Machine Learning}?}\\
+    
+    Un método de aprendizaje agrupado o \textit{ensemble learning} hace referencia a cuando agrupan varios modelos base con el fin de obtener una predicción óptima. Resulta preferible confiar en varios modelos que en uno solo. Adicionalmente, utilizar un conjunto de modelos ocasiona que le modelo sea más resistente a \textit{overfitting}.\\
+    Es necesario asegurarse de que los modelos utilizados en el conjunto son independientes. Esto puede garantizarse utilizando diferentes tipos de algoritmos (redes neuronales, regresión logística, árboles de decisión, SVMs, etc.) o entrenando un mismo modelo con diferentes datos. Se pueden utilizar diferentes técnicas para garantizar la independecia de estos sets de datos como \textit{bagging}, \textit{boosting}, \textit{stacking}, entre otros.  
+    
+    \item \textbf{¿Qué es \textit{bagging}?}\\
+    
+    \textit{Bootstrap aggregating} o \textit{B-agging} es un algoritmo utilizado para mejorar la estabilidad de conjuntos de modelos (\textit{ensembles}) tanto de regresión como de clasificación.\\
+    El método consiste en muestrear con reemplazo el dataset original generando una nueva cantidad de sub-datasets que pueden tener observaciones duplicadas pero que de seguro tienen observaciones nuevas. Este método se conoce como \textit{Bootstrap}. La decisión final respeto a la etiqueta de la observación se obtiene usando \textit{Aggregation}. Se puede realizar con base en el total de salidas o en la probabilidad de las predicciones.
+    
+    \item \textbf{¿Qué es \textit{Random Forest} y cómo funciona?¿\textit{Random Forest} utiliza \textit{bagging}?}\\
+    
+    De manera general, \textit{Random Forest} corresponde a un conjunto de múltiples árboles de decisión buscando obtener una predicción más acertada y estable, usualmente entrenados utilizando \textit{bagging}. En la figura \ref{fig:RF} se muestra de mejor manera su procedimiento. Como se mencionó previamente es importante que los modelos (en este caso los árboles) sean independientes y tengan correlación muy baja. Es en este punto donde interviene el método de \textit{bagging}.\\
+    
+    \begin{figure}
+        \centering
+        \includegraphics[trim={77cm 15cm 20cm 9cm}, clip, scale = 0.5]{doc/images/randomrofest.png}
+        \caption{Random Forest (Tomado de \cite{javatpoint})}
+        \label{fig:RF}
+    \end{figure}
+    
+    Cabe resaltar que este algoritmo tiene ventajas en cuanto a que toma menos tiempo de entrenamiento comparado con otros, puede predecir con alto porcentaje de acierto y es capaz de mantener este porcentaje cuando hay una alta porción de datos faltantes \cite{javatpoint}.\\
+    El proceso \cite{3} que sigue la creación de un \textit{Random Forest} se muestra a continuación:
+    \begin{enumerate}
+        \item Seleccionar aleatoriamente K observaciones del set de datos.
+        \item Construir K árboles con diferentes set de entrenamiento.
+        \item Votación de los K árboles con una observación. Para la votación en algoritmos tareas de clasificación se selecciona \textit{moda} y para regresión se utiliza \textit{media}.
+        \item Seleccionar la clase o valor definitivo.
+    \end{enumerate}
+\end{itemize}
+
