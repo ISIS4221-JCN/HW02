@@ -10,13 +10,14 @@ Con base en el diccionario obtenido para cada categoría se crean dos matrices d
 En el caso de la unión de todas las categorías se realiza la unión de todos los diccionarios manteniendo únicamente una repetición de cada palabra. Esto genera una diccionario de 100.000 palabras, con base en el cual se realiza el mismo procedimiento previamente mencionado. Se obtienen entonces otras seis matrices de mayor tamaño conteniendo toda la base de datos completa.
 
 \subsection{Clasificadores}
-Para el entrenamiento y comparación de los clasificadores se crea una función que recibe por parámetro un tipo de clasificador que puede ser Regresión Logística, Naive Bayes, Árbol de decisión o \textit{Random Forest}, un dataset que puede ser \textit{books}, \textit{dvd}, \textit{kitchen}, \textit{electronics} y \textit{all} y un modelo que puede ser \textit{bow}, \textit{bool-bow} o \textit{lexicon}. Se utiliza la función \url{train\_test\_split()} para obtener datasets separados para entrenamiento (80\%) y validación (20\%). Con estos parámetros se procede a cargar el archivo correspondiente al dataset y modelo indicado y posteriormente a entrenar el clasificador indicado.\\
+Para el entrenamiento y comparación de los clasificadores se crea una función que recibe por parámetro un tipo de clasificador que puede ser Regresión Logística (LR), Naive Bayes (NB), Árbol de decisión (DT) o \textit{Random Forest} (RF), un dataset, que puede ser \textit{books}, \textit{dvd}, \textit{kitchen}, \textit{electronics} y \textit{all} y un modelo, que puede ser \textit{bow}, \textit{bool-bow} o \textit{lexicon}. Se utiliza la función \url{train\_test\_split()} de \textit{sklearn}  para obtener datasets separados para entrenamiento (80\%) y validación (20\%). Con estos parámetros se procede a cargar el archivo correspondiente al dataset y modelo indicado y posteriormente a entrenar el clasificador indicado.\\
 
-Este entrenamiento se realiza utilizando la librería \textit{sklearn} de \textit{Python} con los parámetros predeterminados en cada caso. Posteriormente, se realiza una predicción de los datos de validación y se mide \textit{accuracy}, \textit{precision}, \textit{recall} y \textit{f1-score}. Todos estos valores se almacenan en un DataFrame de pandas para facilitar su comparación.\\
+Este entrenamiento se realiza utilizando la librería \textit{sklearn} de \textit{Python} con los parámetros predeterminados para cada uno de los clasificadores. Posteriormente, se realiza una predicción sobre los datos de validación y con esta se mide \textit{accuracy}, \textit{precision}, \textit{recall} y \textit{f1-score}, nuevamente utilizando la librería \textit{sklearn}. Todos estos valores se almacenan en un DataFrame de pandas para facilitar su comparación.\\
 
 En caso de recibir como parámetro \textit{dataset == all} se utilizan los archivos que contienen todas las categorías mezcladas. A continuación, se comparan los resultados obtenidos.
 
 \subsubsection{Comparación}
+
 
 \subsection{\textit{Decision tree and random forests}}
 \subsubsection{\textit{Decision tree}}
