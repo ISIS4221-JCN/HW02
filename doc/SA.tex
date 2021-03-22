@@ -1,0 +1,23 @@
+\section{Análisis de sentimientos}
+Para la tarea de análisis de sentimientos se utilizó una base de datos que contiene críticas realizadas por compradores de diferentes tipos de productos de cocina, películas, electrodomésticos y libros. Las reseñas contienen información del usuario que las escribió, ubicación, una calificación para diferentes aspectos como utilidad, ajuste del título, entre otros y finalmente un texto describiendo su opinión de la compra. Las reseñas están separadas en dos clases, positivas y negativas, y por lo tanto dos archivos. Adicionalmente hay un tercer archivo que contiene reseñas para hacer pruebas. A pesar de que el archivo se llama "sin etiqueta" vienen etiquetadas.
+\subsection{Procesamiento de la base de datos}
+Para el procesamiento de datos se utilizan los archivos llamados procesados, por instrucción del profesor. En estos archivos cada línea de texto contiene únicamente las palabras encontradas en las reseñas un una frecuencia asociada, correspondiente a la cantidad de veces que aparecen en esa reseña y al final su etiqueta correspondiente: \textit{positive} o \textit{negative}.\\
+
+Con esto en mente se recorren los archivos buscando generar un diccionario recopilando el todas las palabras que aparecen y almacenando un diccionario por cada reseña con la palabra y las repeticiones que tiene. Esto genero un diccionario de gran tamaño (>190.000 en el caso de la categoría di libros), razón por la cual se decidió verificar cuántas palabras tenían frecuencia unitaria una vez construido el \textit{dataset} de cada categoría. Esto mostró que más de 75\% del diccionario correspondía a palabras que aparecían únicamente en una reseña. Con base en esto se procedió a remover estas palabras resultando en un diccionario de menor tamaño. Cabe resaltar que para este vocabulario se utilizaron únicamente palabras del los archivos positivo y negativo, mas no del "sin etiquetas".\\
+
+Con base en el diccionario obtenido para cada categoría se crean dos matrices de tamaño \textit{mxn} donde m corresponde al número de documentos y n al número de palabras del diccionario + 1 (correspondiente a la etiqueta asociada). En la primera matriz se almacena para cada documento la cantidad de veces que contiene cada palabra, constituyendo así el modelo BOW de cada documento. En la segunda matriz se almacena únicamente el hecho de que tenga o no la palabra, generando el modelo BOW booleano. De igual manera, se realiza el proceso para los archivos sin etiqueta obteniendo así seis matrices que se almacenan haciendo uso de la función \url{np.save()} de \textit{NumPy}.\\
+
+En el caso de la unión de todas las categorías se realiza la unión de todos los diccionarios manteniendo únicamente una repetición de cada palabra. Esto genera una diccionario de 100.000 palabras, con base en el cual se realiza el mismo procedimiento previamente mencionado. Se obtienen entonces otras seis matrices de mayor tamaño conteniendo toda la base de datos completa.
+
+\subsection{Clasificadores}
+Para el entrenamiento y comparación de los clasificadores se crea una función que recibe por parámetro un tipo de clasificador que puede ser Regresión Logística, Naive Bayes, Árbol de decisión o \textit{Random Forest}, un dataset que puede ser \textit{books}, \textit{dvd}, \textit{kitchen}, \textit{electronics} y \textit{all} y un modelo que puede ser \textit{bow}, \textit{bool-bow} o \textit{lexicon}. Se utiliza la función \url{train\_test\_split()} para obtener datasets separados para entrenamiento (80\%) y validación (20\%). Con estos parámetros se procede a cargar el archivo correspondiente al dataset y modelo indicado y posteriormente a entrenar el clasificador indicado.\\
+
+Este entrenamiento se realiza utilizando la librería \textit{sklearn} de \textit{Python} con los parámetros predeterminados en cada caso. Posteriormente, se realiza una predicción de los datos de validación y se mide \textit{accuracy}, \textit{precision}, \textit{recall} y \textit{f1-score}. Todos estos valores se almacenan en un DataFrame de pandas para facilitar su comparación.\\
+
+En caso de recibir como parámetro \textit{dataset == all} se utilizan los archivos que contienen todas las categorías mezcladas. A continuación, se comparan los resultados obtenidos.
+
+\subsubsection{Comparación}
+
+\subsection{\textit{Decision tree and random forests}}
+\subsubsection{\textit{Decision tree}}
+\subsubsection{\textit{Random forest}}
