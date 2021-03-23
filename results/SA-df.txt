@@ -1,15 +1,15 @@
 \begin{longtable}{lllrrrr}
 \caption{Sentiment analysis model results}\label{tag:SAresults}\\
-\toprule
+\hline
      dataset & classifier &     model &  accuracy &  precision &  recall &  f1\_score \\
-\midrule
+\hline
 \endhead
-\midrule
+\hline
 \multicolumn{7}{r}{{Continued on next page}} \\
-\midrule
+\hline
 \endfoot
 
-\bottomrule
+\hline
 \endlastfoot
        books &         NB &       bow &      0,65 &       0,63 &    0,73 &      0,67 \\
        books &         NB &  bool-bow &      0,67 &       0,64 &    0,76 &      0,69 \\
