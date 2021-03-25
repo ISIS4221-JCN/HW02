@@ -1,1 +1,38 @@
 \section{Mourning Tweets}
+
+El desarrollo y código fuente de esta sección de la tarea se encuentra en el cuaderno \texttt{HW02\_4.ipynb} adjunto.
+
+\subsection{Mourning Lexicon}
+
+\subsubsection{Processing Tweets}
+
+Antes de realizar la construcción de los \textit{Lexicones} e implementar los modelos de clasificación se realizó un proceso estándar para \textit{tokenizar} los \textit{tweets}. Para esto se hizo un procesamiento especial pensado en lenguaje especifico que se utiliza en \textit{Twitter}. Para esto se realizaron los siguientes pasos:
+
+\begin{itemize}
+    \item Remover la puntuación de los \textit{Tweets}.
+    
+    \item \textit{Tokenizar} el \textit{dataset} con el \textit{tokenizador} (\texttt{TweetTokenizer}) especializado de \texttt{nltk} para este medio. Este:
+    \begin{itemize}
+        \item Estandariza todas las palabras a minúsculas.
+        
+        \item Reduce la longitud de las palabras en caso de repetir letras.
+        
+        \item Remueven caracteres especiales de \textit{Twitter} y usuarios (\textit{@}).
+    \end{itemize}
+    
+    \item Se remueven \textit{stop\_words} utilizando el set de palabras de \texttt{nltk} para cada uno de los idiomas (inglés y español).
+    
+\end{itemize}
+
+\subsubsection{Construcción de lexicones}
+
+Para esto se estimo la probabilidad de que cada uno de los términos (\textit{token}) este en cada clase (luto o no luto). Para esto se utiliza el la verosimilitud (\textit{likelihood}) de esta palabra: 
+
+\begin{equation}
+    P(w|c) = \frac{f(w,c)}{f(w,c)}
+\end{equation}
+
+\subsection{Clasificadores}
+
+
+\subsection{Análisis de importancia de características}
