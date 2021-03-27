@@ -2,3 +2,5 @@ data/*
 *.zip
 .ipynb_checkpoints/*
 *.pkl
+*.npy
+*.dict
