@@ -1,0 +1,74 @@
+\begin{longtable}{llllrrrr}
+\caption{Análisis de sentimientos (resultados de modelos)}\\
+\toprule
+{} &      dataset & classifier &     model &  accuracy &  precision &  recall &  f1\_score \\
+\midrule
+\endhead
+\midrule
+\multicolumn{8}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+books NB bow            &        books &         NB &       bow &      0.65 &       0.64 &    0.65 &      0.65 \\
+books NB bool-bow       &        books &         NB &  bool-bow &      0.69 &       0.68 &    0.71 &      0.69 \\
+books NB lexicon        &        books &         NB &   lexicon &      0.51 &       0.50 &    0.87 &      0.63 \\
+dvd NB bow              &          dvd &         NB &       bow &      0.70 &       0.67 &    0.76 &      0.71 \\
+dvd NB bool-bow         &          dvd &         NB &  bool-bow &      0.72 &       0.68 &    0.79 &      0.73 \\
+dvd NB lexicon          &          dvd &         NB &   lexicon &      0.51 &       0.50 &    0.87 &      0.63 \\
+electronics NB bow      &  electronics &         NB &       bow &      0.75 &       0.72 &    0.80 &      0.76 \\
+electronics NB bool-bow &  electronics &         NB &  bool-bow &      0.77 &       0.73 &    0.81 &      0.77 \\
+electronics NB lexicon  &  electronics &         NB &   lexicon &      0.51 &       0.50 &    0.87 &      0.63 \\
+kitchen NB bow          &      kitchen &         NB &       bow &      0.79 &       0.78 &    0.78 &      0.78 \\
+kitchen NB bool-bow     &      kitchen &         NB &  bool-bow &      0.80 &       0.79 &    0.80 &      0.80 \\
+kitchen NB lexicon      &      kitchen &         NB &   lexicon &      0.51 &       0.50 &    0.87 &      0.63 \\
+all NB bow              &          all &         NB &       bow &      0.73 &       0.70 &    0.79 &      0.74 \\
+all NB bool-bow         &          all &         NB &  bool-bow &      0.74 &       0.70 &    0.81 &      0.75 \\
+all NB lexicon          &          all &         NB &   lexicon &      0.51 &       0.51 &    0.86 &      0.64 \\
+books LR bow            &        books &         LR &       bow &      0.81 &       0.80 &    0.81 &      0.81 \\
+books LR bool-bow       &        books &         LR &  bool-bow &      0.83 &       0.83 &    0.82 &      0.83 \\
+books LR lexicon        &        books &         LR &   lexicon &      0.72 &       0.71 &    0.71 &      0.71 \\
+dvd LR bow              &          dvd &         LR &       bow &      0.82 &       0.82 &    0.81 &      0.82 \\
+dvd LR bool-bow         &          dvd &         LR &  bool-bow &      0.83 &       0.83 &    0.83 &      0.83 \\
+dvd LR lexicon          &          dvd &         LR &   lexicon &      0.72 &       0.71 &    0.71 &      0.71 \\
+electronics LR bow      &  electronics &         LR &       bow &      0.86 &       0.84 &    0.89 &      0.86 \\
+electronics LR bool-bow &  electronics &         LR &  bool-bow &      0.88 &       0.85 &    0.92 &      0.88 \\
+electronics LR lexicon  &  electronics &         LR &   lexicon &      0.72 &       0.71 &    0.71 &      0.71 \\
+kitchen LR bow          &      kitchen &         LR &       bow &      0.91 &       0.89 &    0.93 &      0.91 \\
+kitchen LR bool-bow     &      kitchen &         LR &  bool-bow &      0.90 &       0.89 &    0.90 &      0.90 \\
+kitchen LR lexicon      &      kitchen &         LR &   lexicon &      0.72 &       0.71 &    0.71 &      0.71 \\
+all LR bow              &          all &         LR &       bow &      0.87 &       0.85 &    0.89 &      0.87 \\
+all LR bool-bow         &          all &         LR &  bool-bow &      0.87 &       0.85 &    0.89 &      0.87 \\
+all LR lexicon          &          all &         LR &   lexicon &      0.70 &       0.70 &    0.69 &      0.70 \\
+books DT bow            &        books &         DT &       bow &      0.66 &       0.64 &    0.66 &      0.65 \\
+books DT bool-bow       &        books &         DT &  bool-bow &      0.67 &       0.64 &    0.72 &      0.67 \\
+books DT lexicon        &        books &         DT &   lexicon &      0.62 &       0.60 &    0.66 &      0.63 \\
+dvd DT bow              &          dvd &         DT &       bow &      0.68 &       0.68 &    0.63 &      0.65 \\
+dvd DT bool-bow         &          dvd &         DT &  bool-bow &      0.69 &       0.69 &    0.64 &      0.67 \\
+dvd DT lexicon          &          dvd &         DT &   lexicon &      0.62 &       0.60 &    0.66 &      0.63 \\
+electronics DT bow      &  electronics &         DT &       bow &      0.76 &       0.73 &    0.79 &      0.76 \\
+electronics DT bool-bow &  electronics &         DT &  bool-bow &      0.72 &       0.71 &    0.73 &      0.72 \\
+electronics DT lexicon  &  electronics &         DT &   lexicon &      0.62 &       0.60 &    0.66 &      0.63 \\
+kitchen DT bow          &      kitchen &         DT &       bow &      0.80 &       0.78 &    0.82 &      0.80 \\
+kitchen DT bool-bow     &      kitchen &         DT &  bool-bow &      0.80 &       0.79 &    0.81 &      0.80 \\
+kitchen DT lexicon      &      kitchen &         DT &   lexicon &      0.62 &       0.60 &    0.66 &      0.63 \\
+all DT bow              &          all &         DT &       bow &      0.72 &       0.71 &    0.75 &      0.73 \\
+all DT bool-bow         &          all &         DT &  bool-bow &      0.71 &       0.70 &    0.74 &      0.72 \\
+all DT lexicon          &          all &         DT &   lexicon &      1.00 &       1.00 &    0.99 &      1.00 \\
+books RF bow            &        books &         RF &       bow &      0.78 &       0.78 &    0.75 &      0.77 \\
+books RF bool-bow       &        books &         RF &  bool-bow &      0.77 &       0.79 &    0.73 &      0.76 \\
+books RF lexicon        &        books &         RF &   lexicon &      0.72 &       0.72 &    0.71 &      0.71 \\
+dvd RF bow              &          dvd &         RF &       bow &      0.85 &       0.83 &    0.87 &      0.85 \\
+dvd RF bool-bow         &          dvd &         RF &  bool-bow &      0.82 &       0.81 &    0.83 &      0.82 \\
+dvd RF lexicon          &          dvd &         RF &   lexicon &      0.70 &       0.69 &    0.69 &      0.69 \\
+electronics RF bow      &  electronics &         RF &       bow &      0.83 &       0.79 &    0.90 &      0.84 \\
+electronics RF bool-bow &  electronics &         RF &  bool-bow &      0.88 &       0.85 &    0.91 &      0.88 \\
+electronics RF lexicon  &  electronics &         RF &   lexicon &      0.71 &       0.71 &    0.68 &      0.69 \\
+kitchen RF bow          &      kitchen &         RF &       bow &      0.87 &       0.87 &    0.87 &      0.87 \\
+kitchen RF bool-bow     &      kitchen &         RF &  bool-bow &      0.88 &       0.88 &    0.87 &      0.88 \\
+kitchen RF lexicon      &      kitchen &         RF &   lexicon &      0.72 &       0.71 &    0.72 &      0.71 \\
+all RF bow              &          all &         RF &       bow &      0.85 &       0.87 &    0.83 &      0.85 \\
+all RF bool-bow         &          all &         RF &  bool-bow &      0.84 &       0.84 &    0.82 &      0.83 \\
+all RF lexicon          &          all &         RF &   lexicon &      1.00 &       1.00 &    1.00 &      1.00 \\
+\end{longtable}
