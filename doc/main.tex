@@ -11,6 +11,7 @@
 \usepackage{vmargin}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{multirow}
 \setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
 
 \title{Tarea - 02}
@@ -43,7 +44,29 @@
 \fancyfoot[R]{\thepage}
 
 \begin{titlepage}
-	\centering
+	\centering% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Categoría}           & \textbf{Modelo} & \textbf{Caracterśitica}            \\ \hline
+\multirow{3}{*}{Books}       & Bool-BOW        & \multirow{2}{*}{'excellent'}       \\ \cline{2-2}
+                             & BOW             &                                    \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{DVD}         & Bool-BOW        & 'great'                            \\ \cline{2-3} 
+                             & BOW             & 'excellent'                        \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{Electronics} & Bool-BOW        & 'great'                            \\ \cline{2-3} 
+                             & BOW             & 'great'                            \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{Kitchen}     & Bool-BOW        & 'great'                            \\ \cline{2-3} 
+                             & BOW             & 'great'                            \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{All}         & Bool-BOW        & 'excellent'                        \\ \cline{2-3} 
+                             & BOW             & 'excellent'                        \\ \cline{2-3} 
+                             & Lexicon         & \# of positive words ANFII         \\ \hline
+\end{tabular}
+\end{table}
     \includegraphics[scale = 0.45]{images/Logo.png}\\[0.5 cm]	% University Logo
     \textsc{\large Universidad de los Andes\\
         \vspace{0.2cm} 

@@ -41,7 +41,7 @@ En caso de recibir como parámetro \textit{dataset == all} se utilizan los archi
 \subsubsection{Comparación}
 Como se indica en las instrucciones de la tarea, se evalúan las cuatro métricas más comunes para medir el desempeño cada uno de los modelos. El resultado de cada métrica se almacena en un DataFrame mostrado a continuación (\textit{véase tabla} \ref{tag:SAresults}). Allí se muestra para cada entrenamiento el \textit{dataset} que se utilizó, el clasificador seleccionado, el modelo escogido y el valor resultante de todas las métricas aplicadas.
 
-\input{results/SA-df.txt}
+\input{resources/SA-df.txt}
 
 Lo anterior muestra claramente que el desempeño en general de todos los modelos es muy similar. No hay un modelo que sobresalga en todas las métricas. A continuación, se muestran promedios de los resultados agrupando para cada parámetro.
 
@@ -60,10 +60,10 @@ En contraste los otros dos clasificadores (RF y LR) tienen un desempeño similar
     \centering
     \includegraphics[scale = 0.45]{results/datasets_comparison.png}
     \caption{Comparación de datasets}
-    
+    \label{fig:dataset_comparison}
 \end{figure}
 
-En cuanto a la comparación de datasets (\textit{véase figura \ref{fig:dataset_comparisson}}) los resultados son relativamente similares. En donde hay muy buen \textit{recall} un \textit{precision} bajo compensa. Podría decirse que los datasets de libros y películas son un poco más difíciles de de clasificar, mientas que electrónicos, cocina y todos juntos son un poco más fáciles. Se resalta la poca variación en las métricas resultantes de los clasificadores con todos los dataset juntos al igual que en el de electrónicos.
+En cuanto a la comparación de datasets (\textit{véase figura \ref{fig:dataset_comparison}}) los resultados son relativamente similares. En donde hay muy buen \textit{recall} un \textit{precision} bajo compensa. Podría decirse que los datasets de libros y películas son un poco más difíciles de de clasificar, mientas que electrónicos, cocina y todos juntos son un poco más fáciles. Se resalta la poca variación en las métricas resultantes de los clasificadores con todos los \textit{dataset} juntos al igual que en el de electrónicos. Ahora bien, analizando si es preferible o no entrenar modelo para cada categoría o para todas en conjunto, se hace evidente que el rendimiento en general de todos los \textit{datasets} juntos es mejor que los demás. Adicionalmente, solo se requiere un modelo. No obstante, es pertinente resaltar que el tamaño de la matriz de características del dataset 'all' es mayor, pues corresponde a la unión de los diccionarios asociados a cada categoría.
 
 \begin{figure}[H]
     \centering
@@ -74,10 +74,57 @@ En cuanto a la comparación de datasets (\textit{véase figura \ref{fig:dataset_
 
 Ahora bien, los modelos de \textit{Bag of Words} booleano y no booleano tienen resultados casi que idénticos. Los resultados de los modelos de lexicones tienen resultados ligeramente menores, resaltando que \textit{recall} es bastante alto. Adicionalmente, la construcción de cada uno de los modelos no tiene mayor diferencia ni en tiempo ni en capacidad computacional requerida para ejecución o para entrenamiento de los modelos.
 
-\subsubsection{Variación de parámetros de Random Forest}
-Se procede a hacer variación de parámetros para el modelo de Random Forest. Se utiliza GridSearchCV, una función de Sklearn que permite hacer una variación de parámetros aleatoria. Se indica entonces según recomendación de \cite{Sklearn-RF} que los parámetros a variar son \textit{n\_estimadores} que corresponde al número de estimadores y \textit{max\_features} que corresponde al método para obtener el número máximo de características a tener en cuenta.\\
+\textbf{Característica más importante para regresión logística}\\
+Ahora bien, se desea verificar cuál es la característica más importarte para el clasificador de Regresión Logística. Para ello, se obtiene el vector de coeficientes asociado a cada uno de los clasificadores y se busca cuál es el mayor y por consiguiente a qué palabra o característica está asociado. Los resultados se muestran en la tabla \ref{tab:LR-features}.
 
-La variación de los resultados con diferentes parámetros es realmente mínima. Como se puede apreciar en el \textit{notebook} correspondiente.
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\caption{Características más importantes para LR}
+\label{tab:LR-features}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Categoría}           & \textbf{Modelo} & \textbf{Característica}            \\ \hline
+\multirow{3}{*}{Books}       & Bool-BOW        & \multirow{2}{*}{'excellent'}       \\ \cline{2-2}
+                             & BOW             &                                    \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{DVD}         & Bool-BOW        & 'great'                            \\ \cline{2-3} 
+                             & BOW             & 'excellent'                        \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{Electronics} & Bool-BOW        & 'great'                            \\ \cline{2-3} 
+                             & BOW             & 'great'                            \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{Kitchen}     & Bool-BOW        & 'great'                            \\ \cline{2-3} 
+                             & BOW             & 'great'                            \\ \cline{2-3} 
+                             & Lexicon         & \# of negative words  SentiWordNet \\ \hline
+\multirow{3}{*}{All}         & Bool-BOW        & 'excellent'                        \\ \cline{2-3} 
+                             & BOW             & 'excellent'                        \\ \cline{2-3} 
+                             & Lexicon         & \# of positive words ANFII         \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Variación de parámetros de Random Forest}
+Se procede a hacer variación de parámetros para el modelo de Random Forest. Se utiliza RandomSearchCV, una función de Sklearn que permite hacer una variación de parámetros aleatoria. En esta función se define cuál es la métrica que se busca maximizar; en este caso se utilizan \textit{precison} y \textit{recall}. Se indica entonces, según recomendación de \cite{Sklearn-RF} que los parámetros a variar son \textit{n\_estimadores} que corresponde al número de estimadores, \textit{max\_features} que corresponde al método para obtener el número máximo de características a tener en cuenta, \textit{criterion} que corresponde al algoritmo a utilizar para el entrenamiento del árbol, \textit{max\_depth} que corresponde a la profundidad máxima del árbol y \textit{max\_leaf\_nodes} que indica el número máximo de nodos 'hojas' (\textit{véase descripción a continuación)}.\\
+
+La variación de los resultados con diferentes parámetros es realmente mínima. Como se puede apreciar en el \textit{notebook} correspondiente. No obstante, los mejores resultados se ven al utilizar log2 como número máximo de características, lo cuál es respaldado por la teoría\cite{Sklearn-RF} en donde afirman que esta es la mejor escogencia para tareas de clasificación.
+
+\subsubsection{Evaluación de los modelos}
+Se selecciona entonces el mejor modelo para cada categoría y se evalúa su desempeño en el \textit{dataset} de evaluación. Los resultados se muestran en al tabla \ref{tab:model_eval}
+\begin{table}[]
+\centering
+\caption{Evaluación de modelos}
+\label{tab:model_eval}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Categoría} & \textbf{Modelo}     & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} \\ \hline
+Books              & Logistic regression & 0.828             & 0.825              & 0.838           & 0.832             \\ \hline
+Kitchen            & Logistic regression & 0.874             & 0.875              & 0.871           & 0.873             \\ \hline
+DVD                & Random Forest       & 0.808             & 0.781              & 0.861           & 0.819             \\ \hline
+Electronics        & Logistic Regression & 0.863             & 0.861              & 0.869           & 0.865             \\ \hline
+All                & Random Forest       & 0.843             & 0.858              & 0.823           & 0.840             \\ \hline
+\end{tabular}
+\end{table}
 
 \subsection{\textit{Decision tree and random forests}}
 
@@ -103,7 +150,7 @@ A continuación, se realiza un investigación detallada en los modelos de clasif
         \item \textit{Iterative Dichotomiser 3:} El algoritmo crea un árbol con múltiples caminos evaluando para cada nodo cuál es la característica categórica que ofrece la mayor ganancia de información (information gain) para las etiquetas de clase. El árbol crece hacia abajo hasta alcanzar su tamaño máximo y se aplica una etapa de \textit{pruning} o poda. 
         \item \textit{C4.5:} Es el sucesor del algoritmo previamente descrito. Retira la condición de que las características deben ser categóricas definiendo dinámicamente atributos discretos que permiten partir el atributo continuo en diferentes sets de intervalos.
         \item \textit{C5.0:} Es una versión mejorada de C4.5 que utiliza menos memoria y crea sets de decisión más pequeños siendo más acertado. Está liberado bajo licencia de propiedad.
-        \item \textbf{\textbf{CART:}} Es similar a C4.5 pero soporta objetivos numéricos (regresión). Construye árboles binarios usando la característica que más ganancia de información ofrezca en cada nodo. Es el utilizado por \textit{scikit-learn}.
+        \item \textit{\textbf{CART:}} Es similar a C4.5 pero soporta objetivos numéricos (regresión). Construye árboles binarios usando la característica que más ganancia de información ofrezca en cada nodo. Es el utilizado por \textit{scikit-learn}.
     \end{itemize}
     \item \textbf{¿Un árbol de decisión es un modelo generativo o discriminativo?}\\
     
