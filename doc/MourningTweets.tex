@@ -6,7 +6,7 @@ El desarrollo y código fuente de esta sección de la tarea se encuentra en el c
 
 \subsubsection{Processing Tweets}
 
-Antes de realizar la construcción de los \textit{Lexicones} e implementar los modelos de clasificación se realizó un proceso estándar para \textit{tokenizar} los \textit{tweets}. Para esto se hizo un procesamiento especial pensado en lenguaje especifico que se utiliza en \textit{Twitter}. Para esto se realizaron los siguientes pasos:
+Antes de realizar la construcción de los \textit{Lexicones} e implementar los modelos de clasificación se realizó un proceso estándar para \textit{tokenizar} los \textit{tweets}. Para esto se hizo un procesamiento especial pensado en lenguaje especifico que se utiliza en \textit{Twitter} y las particularidades de ruido que este medio conlleva. Para esto se realizaron los siguientes pasos:
 
 \begin{itemize}
     \item Remover la puntuación de los \textit{Tweets}.
@@ -22,15 +22,21 @@ Antes de realizar la construcción de los \textit{Lexicones} e implementar los m
     
     \item Se remueven \textit{stop\_words} utilizando el set de palabras de \texttt{nltk} para cada uno de los idiomas (inglés y español).
     
+    \item Con los términos (\textit{tokens}) de los \textit{tweets} se construye un vocabulario (o \textit{dictionary}) para cada uno de los \textit{datasets} (inglés y español). 
+    
+    \item Con la función \texttt{filter\_extremes} de \texttt{Gensim} se remueven los términos (\textit{tokens}) menos comunes (aquellos que aparecen en menos de 3 documentos/\textit{tweets}).
+    
 \end{itemize}
 
 \subsubsection{Construcción de lexicones}
 
-Para esto se estimo la probabilidad de que cada uno de los términos (\textit{token}) este en cada clase (luto o no luto). Para esto se utiliza el la verosimilitud (\textit{likelihood}) de esta palabra: 
+Una vez se tienen definido el diccionario para los dos datasets, se construyen los lexicones estimando la probabilidad de que cada uno de los términos (\textit{tokens}) este en cada clase (luto o no luto). Para esto se utiliza el la verosimilitud  (\textit{likelihood}) de esta palabra: 
 
 \begin{equation}
     P(w|c) = \frac{f(w,c)}{f(w,c)}
 \end{equation}
+
+\subsubsection{Resultados}
 
 \subsection{Clasificadores}
 
