@@ -1,13 +1,35 @@
 \section{Análisis de sentimientos}
 Para la tarea de análisis de sentimientos se utilizó una base de datos que contiene críticas realizadas por compradores de diferentes tipos de productos de cocina, películas, electrodomésticos y libros. Las reseñas contienen información del usuario que las escribió, ubicación, una calificación para diferentes aspectos como utilidad, ajuste del título, entre otros y finalmente un texto describiendo su opinión de la compra. Las reseñas están separadas en dos clases, positivas y negativas, y por lo tanto dos archivos. Adicionalmente hay un tercer archivo que contiene reseñas para hacer pruebas. A pesar de que el archivo se llama "sin etiqueta" vienen etiquetadas.
-\subsection{Procesamiento de la base de datos}
-Para el procesamiento de datos se utilizan los archivos llamados procesados, por instrucción del profesor. En estos archivos cada línea de texto contiene únicamente las palabras encontradas en las reseñas un una frecuencia asociada, correspondiente a la cantidad de veces que aparecen en esa reseña y al final su etiqueta correspondiente: \textit{positive} o \textit{negative}.\\
 
-Con esto en mente se recorren los archivos buscando generar un diccionario recopilando el todas las palabras que aparecen y almacenando un diccionario por cada reseña con la palabra y las repeticiones que tiene. Esto genero un diccionario de gran tamaño (>190.000 en el caso de la categoría di libros), razón por la cual se decidió verificar cuántas palabras tenían frecuencia unitaria una vez construido el \textit{dataset} de cada categoría. Esto mostró que más de 75\% del diccionario correspondía a palabras que aparecían únicamente en una reseña. Con base en esto se procedió a remover estas palabras resultando en un diccionario de menor tamaño. Cabe resaltar que para este vocabulario se utilizaron únicamente palabras del los archivos positivo y negativo, mas no del "sin etiquetas".\\
+\subsection{Procesamiento de la base de datos}
+
+Para el procesamiento de datos se utilizan los archivos llamados \textit{procesados}, por instrucción del profesor. En estos archivos cada línea de texto contiene únicamente las palabras encontradas en las reseñas y su frecuencia asociada, correspondiente a la cantidad de veces que aparecen en esa reseña y al final su etiqueta correspondiente: \textit{positive} o \textit{negative}.\\
+
+Con esto en mente se recorren los archivos buscando generar un diccionario recopilando el todas las palabras que aparecen y almacenando un diccionario por cada reseña con la palabra y las repeticiones que tiene. Esto genero un diccionario de gran tamaño (>190.000 en el caso de la categoría 'libros'), razón por la cual se decidió verificar cuántas palabras tenían frecuencia unitaria una vez construido el \textit{dataset} de cada categoría. Esto mostró que más de 75\% del diccionario correspondía a palabras que aparecían únicamente en una reseña. Con base en esto se procedió a remover estas palabras resultando en un diccionario de menor tamaño. Cabe resaltar que para este vocabulario se utilizaron únicamente palabras del los archivos positivo y negativo, mas no del "sin etiquetas".\\
 
 Con base en el diccionario obtenido para cada categoría se crean dos matrices de tamaño \textit{mxn} donde m corresponde al número de documentos y n al número de palabras del diccionario + 1 (correspondiente a la etiqueta asociada). En la primera matriz se almacena para cada documento la cantidad de veces que contiene cada palabra, constituyendo así el modelo BOW de cada documento. En la segunda matriz se almacena únicamente el hecho de que tenga o no la palabra, generando el modelo BOW booleano. De igual manera, se realiza el proceso para los archivos sin etiqueta obteniendo así seis matrices que se almacenan haciendo uso de la función \url{np.save()} de \textit{NumPy}.\\
 
-En el caso de la unión de todas las categorías se realiza la unión de todos los diccionarios manteniendo únicamente una repetición de cada palabra. Esto genera una diccionario de 100.000 palabras, con base en el cual se realiza el mismo procedimiento previamente mencionado. Se obtienen entonces otras seis matrices de mayor tamaño conteniendo toda la base de datos completa.
+En el caso de la unión de todas las categorías se realiza la unión de todos los diccionarios manteniendo únicamente una repetición de cada palabra. Esto genera una diccionario de 100.000 palabras, con base en el cual se realiza el mismo procedimiento previamente mencionado. Se obtienen entonces otras seis matrices de mayor tamaño conteniendo toda la base de datos completa.\\
+
+Ahora bien, para el proceso de extracción de características con base en lexicones se realizo una investigación de cuáles son las características más utilizadas para este tipo de análisis. En \cite{Paper_lexicones} destacan que las principales características que se pueden extraer son \textit{i)} número de palabras positivas \textit{ii)} número de palabras negativas \textit{iii)} palabras positivas divido entre palabras negativas \textit{iv)} polaridad de la última palabra \textit{v)} suma de puntaje de palabras positivas y \textit{vi)} suma de puntaje de palabras negativas. Con esto en mente, se analiza qué información se puede extraer de cada lexicón ofrecido por el profesor resultando en las siguientes características:
+
+\begin{itemize}
+    \item Número de palabras positivas de acuerdo con SentiWordNet.
+    \item Número de palabras negativas de acuerdo con SentiWordNet.
+    \item Total de palabras positivas entre total de palabras negativas.
+    \item Polaridad de la última palabra.
+    \item Suma de puntajes de palabras negativas.
+    \item Suma de puntajes de palabras positivas.
+    \item Número de palabras negativas de acuerdo con ANFII.
+    \item Número de palabras positivas de acuerdo con ANFII.
+    \item Puntaje de palabras negativas.
+    \item Puntaje de palabras positivas.
+    \item Número de palabras positivas de acuerdo con WordStat.
+    \item Número de palabras negativas de acuerdo con WordStat.
+    \item Suma de polaridad de las palabras de acuerdo con Senticnet.
+\end{itemize}
+
+Esta extracción resulta entonces en una matriz donde las columnas (catorce) corresponden a las características previamente listadas más la etiqueta y las filas corresponden a documentos de los cuales se extrajo la información. Teniendo en cuenta que las características de lexicones no está ligas al \textit{dataset}, la matriz conjunta de todas las categorías se construye juntando las de cada categoría independientemente.
 
 \subsection{Clasificadores}
 Para el entrenamiento y comparación de los clasificadores se crea una función que recibe por parámetro un tipo de clasificador que puede ser Regresión Logística (LR), Naive Bayes (NB), Árbol de decisión (DT) o \textit{Random Forest} (RF), un dataset, que puede ser \textit{books}, \textit{dvd}, \textit{kitchen}, \textit{electronics} y \textit{all} y un modelo, que puede ser \textit{bow}, \textit{bool-bow} o \textit{lexicon}. Se utiliza la función \url{train\_test\_split()} de \textit{sklearn}  para obtener datasets separados para entrenamiento (80\%) y validación (20\%). Con estos parámetros se procede a cargar el archivo correspondiente al dataset y modelo indicado y posteriormente a entrenar el clasificador indicado.\\
@@ -38,7 +60,7 @@ En contraste los otros dos clasificadores (RF y LR) tienen un desempeño similar
     \centering
     \includegraphics[scale = 0.45]{results/datasets_comparison.png}
     \caption{Comparación de datasets}
-    \label{fig:dataset_comparisson}
+    
 \end{figure}
 
 En cuanto a la comparación de datasets (\textit{véase figura \ref{fig:dataset_comparisson}}) los resultados son relativamente similares. En donde hay muy buen \textit{recall} un \textit{precision} bajo compensa. Podría decirse que los datasets de libros y películas son un poco más difíciles de de clasificar, mientas que electrónicos, cocina y todos juntos son un poco más fáciles. Se resalta la poca variación en las métricas resultantes de los clasificadores con todos los dataset juntos al igual que en el de electrónicos.
@@ -50,7 +72,12 @@ En cuanto a la comparación de datasets (\textit{véase figura \ref{fig:dataset_
     \label{fig:model_comparisson}
 \end{figure}
 
-Ahora bien, los modelos de \textit{Bag of Words} booleano y no booleano tienen resultados casi que idénticos. Adicionalmente, la construcción de uno o el otro no tiene mayor diferencia ni en tiempo ni en capacidad computacional requerida. 
+Ahora bien, los modelos de \textit{Bag of Words} booleano y no booleano tienen resultados casi que idénticos. Los resultados de los modelos de lexicones tienen resultados ligeramente menores, resaltando que \textit{recall} es bastante alto. Adicionalmente, la construcción de cada uno de los modelos no tiene mayor diferencia ni en tiempo ni en capacidad computacional requerida para ejecución o para entrenamiento de los modelos.
+
+\subsubsection{Variación de parámetros de Random Forest}
+Se procede a hacer variación de parámetros para el modelo de Random Forest. Se utiliza GridSearchCV, una función de Sklearn que permite hacer una variación de parámetros aleatoria. Se indica entonces según recomendación de \cite{Sklearn-RF} que los parámetros a variar son \textit{n\_estimadores} que corresponde al número de estimadores y \textit{max\_features} que corresponde al método para obtener el número máximo de características a tener en cuenta.\\
+
+La variación de los resultados con diferentes parámetros es realmente mínima. Como se puede apreciar en el \textit{notebook} correspondiente.
 
 \subsection{\textit{Decision tree and random forests}}
 
