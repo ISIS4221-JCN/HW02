@@ -91,5 +91,49 @@ Ahora bien, algo similar a lo que ocurre con las palabras ocurre con los emotico
 
 \subsection{Clasificadores}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{results/mourning_tweets_accuracy.png}
+    \caption{Accuracy}
+    \label{fig:mt_acc}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{results/mourning_tweets_precision.png}
+    \caption{Precision}
+    \label{fig:mt_precision}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{results/mourning_tweets_recall.png}
+    \caption{Recall}
+    \label{fig:mt_recall}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{results/mourning_tweets_f1_score.png}
+    \caption{F1 Score}
+    \label{fig:mt_f1score}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \caption{Resumen de resultados (métricas de desempeño) según clasificador y según idioma del \textit{dataset}}
+    \label{tab:clf_summary}
+    \includegraphics[width=\textwidth]{doc/images/summary_results_clf.png}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Resumen de resultados (métricas de desempeño) según el \textit{set} de características (emojis o no emojis) utilizado para la clasificación y según el idioma.}
+    \label{tab:emojis_summary}
+    \includegraphics[width=\textwidth]{doc/images/summary_results_emoji.png}
+\end{table}
 
 \subsection{Análisis de importancia de características}
