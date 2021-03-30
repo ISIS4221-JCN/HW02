@@ -1,1 +1,12 @@
 \section{\textit{Naive Bayes and Logistic Regression}}
+
+\subsection{Base de datos}
+Para el desarrollo de este punto del taller se utilizó el \textit{dataset} llamado \textit{20 news} que corresponde a una recopilación de correos cruzados solicitando información o haciendo preguntas de categorías específicas. El dataset contiene entonces 20 carpetas con nombres diferentes y una serie de archivos dentro los cuales contienen un encabezado que indica las direcciones de correo y el texto como tal en donde se formula la pregunta o el requerimiento de información.\\
+
+Para la lectura del dataset de indica que se desea eliminar ciertos caracteres específicos, pues de lo contrario podrían interferir con la separación de palabras y entrenamiento de los modelos. Posteriormente, se utiliza código de tareas pasadas para la obtención del modelo BOW y Bool-BOW de cada uno de los documentos de cada categoría.\\
+
+Como representación personalizada se sugiere .... COMPLETAR 
+
+\subsection{Resultados y comparación de modelos}
+Se procede entonces al entrenamiento, validación y evaluación de los modelos indicados, dividiendo el dataset en 70\% para entrenamiento, 10\% para validación y el restante 30\% para evaluación. Para realizar \textit{10-fold cross validation} se utiliza la función correspondiente de sklearn. Los resultados se muestran a continuación.
+
