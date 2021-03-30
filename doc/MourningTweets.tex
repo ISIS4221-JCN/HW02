@@ -21,11 +21,11 @@ Antes de realizar la construcción de los \textit{Lexicones} e implementar los m
         \item Remueven caracteres especiales de \textit{Twitter} y usuarios (\textit{@}).
     \end{itemize}
     
-    \item Se remueven \textit{stop\_words} utilizando el set de palabras de \texttt{nltk} para cada uno de los idiomas (inglés y español).
+    \item Remover las \textit{stop\_words} utilizando el set de palabras de \texttt{nltk} para cada uno de los idiomas (inglés y español).
     
     \item Con los términos (\textit{tokens}) de los \textit{tweets} se construye un vocabulario (o \textit{dictionary}) para cada uno de los \textit{datasets} (inglés y español). 
     
-    \item Con la función \texttt{filter\_extremes} de \texttt{Gensim} se remueven los términos (\textit{tokens}) menos comunes, aquellos que aparecen en menos de 5 documentos (\textit{tweets}). También se hace lo mismo para los más comunes, aquellos que aparecen en más del 75\% del \textit{dataset}, pero este cambio no tuvo efecto en el tamaño del diccionario (posiblemente porque al remover las \textit{stop\_words}, se eliminan las polabras más comunes del \textit{dataset}).
+    \item Filtrar términos poco comunes (aquellos que aparecen en menos de 5 \textit{tweets}) y muy comunes (aquellos que aparecen en más del 75\% del \textit{dataset}). Para esto se uso la función \texttt{filter\_extremes} de \texttt{Gensim}. 
     
 \end{itemize}
 
@@ -36,21 +36,20 @@ Una vez se tienen definido el diccionario para los dos datasets, se construyen l
 Para estimar dichas probabilidades, se utilizan los conceptos de verosimilitud  (\textit{likelihood}) y de verosimilitud escalada (\textit{scaled likelihood}). Las expresiones para dichas probabilidades son adaptadas de la referencia \cite{Potts2010SALT}, y se presentan a continuación:
 
 \begin{equation}
-    P(w|c=i) = \frac{f(w,c=i)}{\sum_{w\in C} f(w,c=i)}
+    \mathbf{P(w|c=i)} = \frac{f(w,c=i)}{\sum_{w\in C} f(w,c=i)}
     \label{likelihood}
-\end{equation} \\
+\end{equation} 
 
 Al escalar esta probabilidadc condicional con las probabilidades \textit{a priori} de las palabras y las clases (utilizando el teorema de Bayes), se obtiene la siguiente probabilidad condicional:
 
 \begin{equation}
-    P(c=i|w) = \frac{P(w|c=i) p(c=i)}{p(w)} = \frac{P(w|c=i)}{\sum_{c\in C} P(w|c=i)}
+    \mathbf{P(c=i|w)} = \frac{P(w|c=i) p(c=i)}{p(w)} = \frac{P(w|c=i)}{\sum_{c\in C} P(w|c=i)}
     \label{scaled_likelihood}
-\end{equation} \\
+\end{equation} 
 
 En \cite{Potts2010SALT}, sugieren trabajar con esta segunda probabilidad condicional pues un sentido más acorde. Dada la palabra, cual es la probabilidad que pertenezca a la clase. No obstante, para los dataset en cuestión se analizan ambas probabilidades.
 
 \subsubsection{Resultados}
-
 A partir de las expresiones (\ref{likelihood}) y (\ref{scaled_likelihood}), se calculan las probabilidades de cada termino para la clase mourning ($c=1$) en los dos datasets (inglés y español).
 
 \begin{table}[H]
@@ -67,13 +66,23 @@ A partir de las expresiones (\ref{likelihood}) y (\ref{scaled_likelihood}), se c
     \includegraphics[width=\textwidth]{doc/images/EN_Lexicons.png}
 \end{table}
 
+En los cuadros \ref{tab:es_lexicons} y \ref{tab:en_lexicons} se observan los 15 términos con mayor probabilidad de pertenecer a un \textit{tweet} de luto para el \textit{dataset} en español y en inglés, respectivamente. En ambos casos se presentan los resultados ordenados tanto por su \textit{likelihood} (probabilidad $P(w|c=1)$) como por \textit{scaled likelihood} (probabilidad $P(c=1|w)$). En general los resultados son bastante similares en ambos idiomas, especialmente si se mira solo su probabilidad sin escalar. \\
+
+En este caso, y a pesar de no estar ordenados exactamente igual, se observan términos muy similares en ambos idiomas. Acrónimos de luto como \textit{qdep}, el emoticón de las manos orando (id 50) y palabras como condolencias, pena, paz y familia (\textit{rip, condolences, peace, family, sorry}) se encuentran en ambas listas. De igual forma, al organizar los términos únicamente por esta probabilidad, se encuentran también palabras asociadas a la pandemia como coronavirus, covid, 19 en ambos idiomas. No obstante, es evidente que estos términos se encuentran ahí por su alta frecuencia a lo largo de todos los \textit{tweets}. Esto se puede afirmar poque, aunque su probabilidad condicional de pertenecer a la clase de luto $P(w|c=1)$ es muy alta, también lo es su probabilidad de pertenecer a la clase de no luto $P(w|c=0)$, e incluso en algunos casos es mayor. \\
+
+Por otro lado, si se observan los términos ordenados por la probabilidad escalada $P(c=1|w)$ se obtiene una lista de palabras poco comunes. Esto se debe a que al escalar por la probabilidad de la palabra (dividir entre $p(w)$), las palabras poco comunes obtienen un peso muy importante. De hecho, el set de palabras que se obtiene, tiene en todos los términos la misma probabilidad (1). Esto quiere decir que son palabras que solo aparecen en la clase de luto (\textit{mourning}), a pesar de que su ocurrencia es realmente baja. 
+
 \begin{table}[H]
+    \centering
     \caption{Resultado de los 15 emoticones con mayor probabilidad de aparecer en tweets de luto (\textit{mourning}) del \textit{dataset} en español (ES).}
     \label{tab:es_emojis}
     \includegraphics[width=\textwidth]{doc/images/ES_Emojis.png}
 \end{table}
 
+Ahora bien, algo similar a lo que ocurre con las palabras ocurre con los emoticones (véase cuadros \ref{tab:es_emojis} y \ref{tab:en_emojis}). Al mirar solo la lista ordenada por la probabilidad $P(w|c=1)$ se observan emoticones similares como: caritas tristes, caritas llorando y corazones (tanto rotos, como negros), en los \textit{datasets} de ambos idiomas. Adicionalmente, en ambos casos las manos orando encabezan la lista. No obstante, al ordenar por la probabilidad $P(c=1|w)$, se obtienen algunos emoticones poco comunes (como el guante de boxeo y el águila), cuya probabilidad es 1, pues solo aparecen en los \textit{tweets} de luto a pesar de su baja frecuencia. Sin embargo, empiezan a aparecer algunos otros con un sentido más relacionado al luto, como la paloma blanca, la cruz, un ángel y las flores. 
+
 \begin{table}[H]
+    \centering
     \caption{Resultado de los 15 emoticones con mayor probabilidad de aparecer en tweets de luto (\textit{mourning}) del \textit{dataset} en español (ES).}
     \label{tab:en_emojis}
     \includegraphics[width=\textwidth]{doc/images/EN_Emojis.png}
