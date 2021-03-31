@@ -26,7 +26,7 @@ Antes de realizar la construcción de los \textit{Lexicones} e implementar los m
     
     \item Con los términos (\textit{tokens}) de los \textit{tweets} se construye un vocabulario (o \textit{dictionary}) para cada uno de los \textit{datasets} (inglés y español). 
     
-    \item Filtrar términos poco comunes (aquellos que aparecen en menos de 5 \textit{tweets}) y muy comunes (aquellos que aparecen en más del 75\% del \textit{dataset}). Para esto se uso la función \texttt{filter\_extremes} de \texttt{Gensim}. 
+    \item Filtrar términos poco comunes (aquellos que aparecen en menos de 5 \textit{tweets}) y muy comunes (aquellos que aparecen en más del 75\% del \textit{dataset}). Para esto se uso la función \texttt{filter\_extremes} de \texttt{Gensim}. Esto resulto en vocabularios de alrededor de 5000 palabras para ambos idiomas.
     
 \end{itemize}
 
@@ -91,36 +91,51 @@ Ahora bien, algo similar a lo que ocurre con las palabras ocurre con los emotico
 
 \subsection{Clasificadores}
 
-\begin{figure}
+\subsubsection{Representación de características}
+
+Para poder entrenar un modelo de clasificación binario (clasificación de \textit{tweet} como luto o no luto) fue necesario convertir los \textit{tweets tokenizados} en un modelo de bolsa de palabras (\textit{BOW Model}). Esto permitirá después obtener información sobre los términos (\textit{tokens}) más relevantes para algunos de los modelos entrenados como clasificadores. \\
+
+De igual forma, para poder evaluar el efecto de los emoticones (\textit{emojis}) en el entrenamiento, se construyeron dos representaciones de \textit{BOW}, una que los incluyera y otra que no. En total los emoticones (después del procesamiento de los \textit{tweets}) representaron aproximadamente un 3\% de los \textit{tokens} del vocabulario (alrededor de 150 términos en ambos idiomas). Por lo que el modelo BOW sin emoticones era de un tamaño ligeramente menor.
+
+\subsection{Resultados}
+
+Para entrenar los modelos se utilizó el 75\% de los datos y el resto del \textit{dataset} (25\%) se utilizó para poner a prueba el desempeño de los modelos presentado a continuación. En total se hicieron pruebas con 4 tipos de modelos (\textit{Naive Bayes, Logistic Regression, Decision Trees} y \textit{Random Forest}). Pero se entrenaron un total de 16 Modelos, dividendo las pruebas por idioma y por representación de caracteristicas (Modelos BOW que incluían o no los emoticones).
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{results/mourning_tweets_accuracy.png}
-    \caption{Accuracy}
+    \caption{Resultados de \textit{Accuracy} para los distintos clasificadores sobre las distintas pruebas realizadas (\textit{datasets} en ingles y español y \textit{features} que incluyen o no \textit{emojis}.}
     \label{fig:mt_acc}
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{results/mourning_tweets_precision.png}
-    \caption{Precision}
+    \caption{Resultados de \textit{Precision} para los distintos clasificadores sobre las distintas pruebas realizadas (\textit{datasets} en ingles y español y \textit{features} que incluyen o no \textit{emojis}.}
     \label{fig:mt_precision}
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{results/mourning_tweets_recall.png}
-    \caption{Recall}
+    \caption{Resultados de \textit{Recall} para los distintos clasificadores sobre las distintas pruebas realizadas (\textit{datasets} en ingles y español y \textit{features} que incluyen o no \textit{emojis}.}
     \label{fig:mt_recall}
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{results/mourning_tweets_f1_score.png}
-    \caption{F1 Score}
+    \caption{Resultados de \textit{F1 Score} para los distintos clasificadores sobre las distintas pruebas realizadas (\textit{datasets} en ingles y español y \textit{features} que incluyen o no \textit{emojis}.}
     \label{fig:mt_f1score}
 \end{figure}
+
+En términos generales se obtuvieron resultados bastante adecuados para una tarea de clasificación binaria. No obstante, que en todas las métricas el desempeño del clasificador de \textit{Naive Bayes} es considerablemente peor en todos los casos. Sin embargo, vale la pena destacar que su precisión aumenta bastante en el \textit{dataset} en español y su \textit{recall} aumenta considerablemente en el \textit{dataset} en inglés. \\
+
+Por su parte los otros 3 clasificadores tienen desempeños bastante respetables, todos por encima del 90\% en casi todas las métricas. Siendo el \textit{Random Forest} el mejor clasificador, seguido del \textit{Logistic Regression} con un desempeño muy similar. Adicionalmente, también se puede observar que la tarea de clasificación fue ligeramente más difícil en inglés, pues en todos los casos se puede observar casi un 4\% de diferencia de desempeño en todas las métricas con el idioma español. En el cuadro \ref{tab:clf_summary} se puede observar un resumen de todos los resultados promedio obtenidos para cada uno de los clasificadores.
+
 
 \begin{table}[H]
     \centering
@@ -128,6 +143,8 @@ Ahora bien, algo similar a lo que ocurre con las palabras ocurre con los emotico
     \label{tab:clf_summary}
     \includegraphics[width=\textwidth]{doc/images/summary_results_clf.png}
 \end{table}
+
+Ahora bien, en cuanto a la importancia de los emoticones, en el cuadro \ref{tab:emojis_summary} se puede observar el resultado promedio de todos los clasificadores agrupado por la inclusión o no de estos en su modelo de representación (\textit{BOW Model}). Aunque en casi todos los casos (salvo por la precisión en el idioma español) la inclusión de emoticones represento un mejor desempeño, en general la mejora es marginal y está lejos de ser categórica. Esto se puede deber al tamaño del \textit{dataset}, el cual es relativamente pequeño, pues aunque los emoticones brinden mayor información al problema, también pueden agregar un poco de ruido a la clasificación. No obstante, en términos generales se puede observar que su inclusión mejora el desempeño en ambos idiomas. 
 
 \begin{table}[H]
     \centering
@@ -137,6 +154,8 @@ Ahora bien, algo similar a lo que ocurre con las palabras ocurre con los emotico
 \end{table}
 
 \subsection{Análisis de importancia de características}
+
+Finalmente, se desea evaluar que términos o emoticones son relevantes para la clasificación a partir de los modelos construidos. Esto con el fin de comparar estos resultados con los de los lexicones construidos anteriormente (véase literal 4.2). Para esto se evaluaron los parámetros de la regresión logística (LR) y del modelo de \textit{Random Forest} (RF). Los cuales se presentan a continuación
 
 \subsubsection{Logistic Regression (LR)}
 
