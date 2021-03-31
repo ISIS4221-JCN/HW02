@@ -91,7 +91,23 @@ Ahora bien, algo similar a lo que ocurre con las palabras ocurre con los emotico
 
 \subsubsection{Lista de palabras de luto \textit{(mourning)}}
 
-A pesar de que las listas de palabras ordenadas con las distintas probabilidades (construidas a partir del \textit{likelihood} y el \textit{scaled likelihood}) dan luces de lo que pueden ser palabras para la clasificación del luto en los \textit{tweets}, tienen varios fallos. Por un lado las primeras incluyen palabras genericas que pueden ser parte de ambas clases (tanto luto como no luto), por el otro, las segundas pueden ser palabras muy poco comunes que no se encuentren fácilmente en el \textit{dataset}.
+A pesar de que las listas de palabras ordenadas con las distintas probabilidades (construidas a partir del \textit{likelihood} y el \textit{scaled likelihood}) dan luces de lo que pueden ser palabras para la clasificación del luto en los \textit{tweets}, tienen varios fallos. Por un lado las primeras incluyen palabras genericas que pueden ser parte de ambas clases (tanto luto como no luto), por el otro, las segundas pueden ser palabras muy poco comunes que no se encuentren fácilmente en el \textit{dataset}. Sin embargo, típicamente en la literatura se utilizan tanto el \textit{score} positivo como el \textit{score} negativo, es decir tanto la probabilidad de que pertenezca a la clase positiva como a la clase negativa. Y aunque la segunda aproximación hace esto, el pesar por la palabra puede resultar en palabras poco comunes. \\
+
+Por esto una propuesta de \textit{score} puede ser simplemente restar los valores de probabilidades ($P(w|c=1) - P(w|c=0)$), con lo cual se obtienen las siguientes listas de palabras (véase cuadros \ref{tab:es_list} y \ref{tab:en_list}).
+
+\begin{table}[H]
+    \centering
+    \caption{Listas de palabras de luto ordenadas por el \textit{score} propuesto para el \textit{dataset} en español (ES)}
+    \includegraphics[width=0.5\textwidth]{doc/images/es_mourning_list.png}
+    \label{tab:es_list}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Listas de palabras de luto ordenadas por el \textit{score} propuesto para el \textit{dataset} en inglés (EN)}
+    \includegraphics[width=0.5\textwidth]{doc/images/en_mourning_list.png}
+    \label{tab:en_list}
+\end{table}
 
 \subsection{Clasificadores}
 
