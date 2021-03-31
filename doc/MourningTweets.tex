@@ -89,6 +89,10 @@ Ahora bien, algo similar a lo que ocurre con las palabras ocurre con los emotico
     \includegraphics[width=\textwidth]{doc/images/EN_Emojis.png}
 \end{table}
 
+\subsubsection{Lista de palabras de luto \textit{(mourning)}}
+
+A pesar de que las listas de palabras ordenadas con las distintas probabilidades (construidas a partir del \textit{likelihood} y el \textit{scaled likelihood}) dan luces de lo que pueden ser palabras para la clasificación del luto en los \textit{tweets}, tienen varios fallos. Por un lado las primeras incluyen palabras genericas que pueden ser parte de ambas clases (tanto luto como no luto), por el otro, las segundas pueden ser palabras muy poco comunes que no se encuentren fácilmente en el \textit{dataset}.
+
 \subsection{Clasificadores}
 
 \subsubsection{Representación de características}
@@ -159,32 +163,40 @@ Finalmente, se desea evaluar que términos o emoticones son relevantes para la c
 
 \subsubsection{Logistic Regression (LR)}
 
+En la regresión logística los pesos asociados a cada uno de los términos (dado que se uso una representación de BOW Model) puede entenderse como la importancia de cada palabra en la clasificación del \textit{tweet} como luto. En este caso se observa que las palabras y emoticones encontrados en los cuadros \ref{tab:lr_coef_es} y \ref{tab:lr_coef_en} son bastante similares a algunos de los \textit{tokens} encontrados cuando se ordenaron por su \textit{likelihood} sin escalar ($P(w|c=1)$). No obstante, estos términos difieren bastante de aquellos ordenados utilizando el \textit{scaled likelihood} ($P(c=1|w)$), lo cual era de esperarse pues estos términos a pesar de aparecer únicamente en \textit{tweets} de luto, eran muy poco representativos dada la poca frecuencia de ocurrencias.
+
 \begin{table}[H]
     \centering
-    \caption{Términos con mayor peso dentro de los parámetros de Regresión Logística (LR) en el \textit{dataset} en español (ES)}
+    \caption{Términos con mayor peso (palabras y emoticones) dentro de los parámetros de Regresión Logística (LR) en el \textit{dataset} en español (ES)}
     \label{tab:lr_coef_es}
     \includegraphics[width=\textwidth]{doc/images/LR_Coef_es.png}
 \end{table}
 
 \begin{table}[H]
     \centering
-    \caption{Términos con mayor peso dentro de los parámetros de Regresión Logística (LR) en el \textit{dataset} en inglés (EN)}
+    \caption{Términos con mayor peso (palabras y emoticones) dentro de los parámetros de Regresión Logística (LR) en el \textit{dataset} en inglés (EN)}
     \label{tab:lr_coef_en}
     \includegraphics[width=\textwidth]{doc/images/LR_Coef_en.png}
 \end{table}
 
+Vale la pena también mencionar que en estos términos no se observa tampoco aquellas palabras genéricas relacionadas con la pandemia como \textit{covid} o cuarentena, que a pesar de aparecer mucho en todos los \textit{tweets} (incluyendo aquellos de luto), en este caso tienen un menor peso y la mayoría, por no decir que todos los términos están semánticamente relacionados con el luto. 
+
 \subsubsection{Random Forest (RF)}
+
+En cuanto al algoritmo de \textit{Random Forest}, no existen como tal un peso asociado a las caracteristicas pero sí existe una medida de que tan importantes son estas a través del \textit{Mean Decrease Impuritu} (MDI) o importancia de \textit{Gini}. Este valor mide el número de veces que una característica (palabra o emoticón) se utilizó para separar un nodo proporcional al número de observaciones.
 
 \begin{table}[H]
     \centering
-    \caption{Términos con mayor peso dentro de los parámetros de Random Forest (RF) en el \textit{dataset} en español (ES)}
-    \label{tab:lr_coef_es}
+    \caption{Términos con mayor peso (palabras y emoticones) dentro de los parámetros de Random Forest (RF) en el \textit{dataset} en español (ES)}
+    \label{tab:rf_coef_es}
     \includegraphics[width=\textwidth]{doc/images/RF_Coef_es.png}
 \end{table}
 
+En los cuadros \ref{tab:rf_coef_es} y \ref{tab:rf_coef_en} se pueden observar los 15 términos con mayor importancia en cuanto al MDI se refiere para los modelos de \textit{Random Forest}. En este caso se observa que los \textit{tokens} más relevantes son bastante similares a los encontrados en el literal anterior (ordenando con los pesos de LR). Tanto en inglés como en español las palabras y los emoticones tienen una fuerte relación semántica con el luto y a pesar de no estar en el mismo orden sus terminos son muy similares. Finalmente, vale la pena destacar que en ambos casos se colan algunos términos un poco peculiares como es el caso de: ripcoronawariorbardurddin, lutonacional, restinpeace (los cuales a pesar de estar relacionados con el luto resultan de la unión de palabras como \textit{hashtags}).
+
 \begin{table}[H]
     \centering
-    \caption{Términos con mayor peso dentro de los parámetros de Random Forest (RF) en el \textit{dataset} en inglés (EN)}
-    \label{tab:lr_coef_en}
+    \caption{Términos con mayor peso (palabras y emoticones) dentro de los parámetros de Random Forest (RF) en el \textit{dataset} en inglés (EN)}
+    \label{tab:rf_coef_en}
     \includegraphics[width=\textwidth]{doc/images/RF_Coef_en.png}
 \end{table}
