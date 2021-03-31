@@ -51,5 +51,8 @@ Finalmente, para obtener el puntaje (o \textit{score}) de cada documento para un
 No obstante, cabe resaltar que por el tamaño de cada una de las matrices resultantes de los tres modelos y las dificultades que ello implica a la hora de entrenar los modelos, se procede a remover aquellos términos que aparecen en menos de 10 documentos. Con esa reducción de se realiza la validación cruzada obteniendo los resultados que se muestran en la sección correspondiente.
 
 \subsection{Resultados y comparación de modelos}
-Se procede entonces al entrenamiento, validación y evaluación de los modelos indicados, dividiendo el dataset en 70\% para entrenamiento, 10\% para validación y el restante 30\% para evaluación. Para realizar \textit{10-fold cross validation} se utiliza la función correspondiente de sklearn. Los resultados se muestran a continuación.
+Se procede entonces al entrenamiento, validación y evaluación de los modelos indicados, dividiendo el dataset en 70\% para entrenamiento, 10\% para validación y el restante 30\% para evaluación. Para realizar \textit{10-fold cross validation} se utiliza la función correspondiente de sklearn.\\
 
+Los resultados muestran que se regresión logística presenta un mejor resultado que Näive Bayes a excepción del caso del modelo BOW, en donde la solución no converge dentro del límite de iteraciones definida, sin importar el valor que se ponga (se realizaron intentos de 1000 iteraciones a pesar de que 100 debería ser un número lógico).
+
+El proceso de validación cruzada (10 fold) muestra resultados realmente similares entre todos los modelos, con un porcentaje promedio de 80\% de \textit{precision} y \textit{recall}. Las gráficas correspondientes a los resultados se muestran en el \textit{notebook} correspondiente. 
