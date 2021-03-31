@@ -25,46 +25,5 @@ The datasets used in this implementation are:
 4. Mourning tweets.
 
 ## Data folder structure
-The following description states how the data folder should be arranged in order
-for it to work directly as instructed in each of the notebooks.
-
-data
-+-- SA
-| +-- all
-| +-- books
-|   +-- negative.review
-|   +-- positive.review
-|   +-- unlabeled.review
-|   +-- raw_negative.review
-|   +-- raw_positive.review
-|   +-- raw_unlabeled.review
-| +-- dvd
-|   +-- negative.review
-|   +-- positive.review
-|   +-- unlabeled.review
-|   +-- raw_negative.review
-|   +-- raw_positive.review
-|   +-- raw_unlabeled.review
-| +-- electornics
-|   +-- negative.review
-|   +-- positive.review
-|   +-- unlabeled.review
-|   +-- raw_negative.review
-|   +-- raw_positive.review
-|   +-- raw_unlabeled.review
-| +-- kitchen
-|   +-- negative.review
-|   +-- positive.review
-|   +-- unlabeled.review
-|   +-- raw_negative.review
-|   +-- raw_positive.review
-|   +-- raw_unlabeled.review
-+-- EN_Lexicons
-| +-- AFINN-111.txt
-| +-- senticnet5.py
-| +-- SentiWordNet_3.0.0.txt
-| +-- WordStatSentiemnts.txt
-+-- 20news
-| +-- Folder per category containing correspondent files
-
-Data can be found in this [link](https://www.dropbox.com/s/5438x78n1ykicck/data.zip?dl=0).
+Data related to HW development can be found in either data or resources folders. Large 
+files can be found in this [link](https://www.dropbox.com/s/5438x78n1ykicck/data.zip?dl=0).
