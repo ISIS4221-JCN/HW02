@@ -66,3 +66,5 @@ data
 | +-- WordStatSentiemnts.txt
 +-- 20news
 | +-- Folder per category containing correspondent files
+
+Data can be found in this [link](https://www.dropbox.com/s/5438x78n1ykicck/data.zip?dl=0).
