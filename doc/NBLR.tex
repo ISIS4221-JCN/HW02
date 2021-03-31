@@ -5,7 +5,50 @@ Para el desarrollo de este punto del taller se utilizó el \textit{dataset} llam
 
 Para la lectura del dataset de indica que se desea eliminar ciertos caracteres específicos, pues de lo contrario podrían interferir con la separación de palabras y entrenamiento de los modelos. Posteriormente, se utiliza código de tareas pasadas para la obtención del modelo BOW y Bool-BOW de cada uno de los documentos de cada categoría.\\
 
-Como representación personalizada se sugiere .... COMPLETAR 
+Como representación personalizada se sugiere la utilización de las características obtenidas mediante el método TfIdf. Este tiene en cuenta dos factores: la frecuencia de un termino en el documento (cuantificado por el \textit{term frequency} o $tf$) y la rareza de la palabra entre los documentos (cuantificado por el \textit{inverse document frecuency} o $idf$). Por un lado, se asume que, entre más veces estén los términos de un \textit{query} en un documento, este es más relevante. Y, por el otro lado, se asume que, la rareza de los términos en la colección los hace más importantes (son más informativos). De esta manera, se utilizan estos dos conceptos para dar un puntaje (\textit{score}) a cada uno de los documentos de la colección sobre los términos de un \textit{query}. \\
+
+Ahora bien, la importancia de la cantidad de términos en un documento (\textit{term frecuency}) no necesariamente es lineal (si un término del \textit{query} aparece 10 veces en un documento, este no es necesariamente 10 veces más importante que un documento que solo lo tiene 1 vez). Por esta razón, típicamente se utiliza la frecuencia logarítmica para pesar este concepto:
+
+\begin{equation}
+    w_{t,d} = \begin{cases} 
+            1 + log_{10}( tf_{t,d} ) &\mbox{if } tf_{t,d} > 0  \\
+            0 & \mbox{otherwise }  
+            \end{cases}
+    \label{tf}
+\end{equation}
+
+Por su parte, la cantidad de documentos en los que aparece un termino (\textit{document frecuency} o $df$) es una medida inversa de la rareza, por lo que se utiliza su forma invertida \textit{inverse document frecuency} o $idf$). A esta medida, de forma similar a la anterior, se le aplica la función logaritmo para reducir el efecto que tiene:
+
+\begin{equation}
+    idf_t = log_{10} \left(\frac{N}{df_t}\right)
+    \label{idf}
+\end{equation}
+
+Así las cosas, para obtener el peso de cada término para cada documento simplemente se multiplican los dos pesos explicados en (\ref{tf}) y (\ref{idf}). Con esto se obtiene: 
+
+\begin{equation}
+    w_{t,d} = tf * idf_{t,d} = log(1 + tf_{t,d}) * log_{10}\left(\frac{N}{df_t}\right)
+    \label{eq:tfidf}
+\end{equation}
+
+Donde:
+\begin{itemize}
+    \item $w$ es el peso resultante.
+    \item $t$ es el índice del término.
+    \item $d$ es el índice del documento.
+    \item $tf_{t,d}$ es la frecuencia del término $t$ en el documento $d$.
+    \item $df_{t}$ es la frecuencia de documento. Corresponde al número de documentos que contienen el término $t$. 
+    \item $idf$ es la frecuencia de documento invertida. Corresponde al total inverso de documentos que contienen el término $t$ al menos una vez.
+    \item $N$: Tamaño total del corpus.
+\end{itemize}
+
+Finalmente, para obtener el puntaje (o \textit{score}) de cada documento para un \textit{query} dado, lo único que se debe hacer es sumar estos pesos sobre todos los términos de dicho \textit{query}.
+
+\begin{equation}
+    score(q,d) = \sum_{t\in q \cap d} tf * idf_{t,d}
+\end{equation}
+
+No obstante, cabe resaltar que por el tamaño de cada una de las matrices resultantes de los tres modelos y las dificultades que ello implica a la hora de entrenar los modelos, se procede a remover aquellos términos que aparecen en menos de 10 documentos. Con esa reducción de se realiza la validación cruzada obteniendo los resultados que se muestran en la sección correspondiente.
 
 \subsection{Resultados y comparación de modelos}
 Se procede entonces al entrenamiento, validación y evaluación de los modelos indicados, dividiendo el dataset en 70\% para entrenamiento, 10\% para validación y el restante 30\% para evaluación. Para realizar \textit{10-fold cross validation} se utiliza la función correspondiente de sklearn. Los resultados se muestran a continuación.
