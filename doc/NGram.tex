@@ -110,3 +110,16 @@ La figura \ref{fig:perplexity_sentences} presenta valores de perplejidad para tr
 
 Existen dos alternativas para solucionar esta situación y mejorar la calidad de los modelos de lenguaje: aumentar el tamaño del corpus ó disminuir el tamaño del vocabulario. Dado que aumentar el tamaño del corpus no es viable dada la antigüedad de los conjuntos de datos, se debería proceder a disminuir el vocabulario de los mismos. Un factor a tener en cuenta es que debido a los requerimientos del enunciado, no se eliminaron las palabras de parada (\textit{stopwords}). Una opción viable para este caso sería eliminar las palabras de parada, con lo cual se reduciría el tamaño del vocabulario. Otra alternativa sería la incorporación de más etapas de preprocesamiento de los datos con el fin de reducir el tamaño del vocabulario.
 
+Para la construcción del modelo lineal se implementó un algoritmo de descenso de gradiente con el fin de buscar los mejores $\lambda$ para la interpolación. El modelo lineal usa las probabilidades condicionales calculadas con los modelos de Laplace utilizados previamente. Debido a que los modelos con trigramas demostraron que no son útiles para los dos conjuntos de datos considerados, estos no fueron incluidos en la construcción del modelo lineal. Tras la ejecución del algoritmo de descenso de gradiente se encontraron los valores de $\lambda$ presentados en la tabla \ref{tab:lambdas_linear}. Los modelos lineales que se obtuvieron al interpolar las probabilidades condicionales tuvieron perplejidades de 1258 y 968 para los conjuntos de datos de \textit{20N} y \textit{BAC}. Teniendo en cuenta que los modelos son bigramas se puede evidenciar una mejora en los modelos. 
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \textbf{Dataset} & \textbf{$\lambda_0$} & \textbf{$\lambda_1$} \\
+        20N & 0.44 & 0.56 \\
+        BAC & 0.39 & 0.61 \\
+    \end{tabular}
+    \caption{Valores de $\lambda$ para los dos modelos lineales.}
+    \label{tab:lambdas_linear}
+\end{table}
+
